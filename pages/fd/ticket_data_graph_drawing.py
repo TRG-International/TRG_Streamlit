@@ -79,3 +79,33 @@ class Ticket_Graph_Drawing():
         plt.title('Customer Ticketing Segmentation Treemap', fontsize=20)
         
         return plt.gcf()
+    
+    def scatter_3d_drawing(self, df_kmeans):
+        df_scatter = df_kmeans
+        df_scatter['Combined Interactions'] = df_kmeans['Agent interactions'] + df_kmeans['Customer interactions']
+        df_scatter['Cluster'] = df_scatter['Cluster'].astype(str)
+
+        # Define a custom color sequence
+        custom_colors = ['#e60049', '#0bb4ff', '#9b19f5', '#00bfa0' , '#e6d800', '#8D493A', '#55AD9B', '#7ED7C1', '#EA8FEA'] 
+
+        # Create the 3D scatter plot
+        fig = px.scatter_3d(
+            df_scatter, 
+            x='Recency', 
+            y='Ticket Count', 
+            z='Combined Interactions', 
+            color='Cluster',
+            opacity=0.7,
+            width=600,
+            height=500,
+            color_discrete_sequence=custom_colors
+        )
+
+        # Update marker size and text position
+        fig.update_traces(marker=dict(size=6), textposition='top center')
+
+        # Update layout template
+        fig.update_layout(template='plotly_white')
+
+        # Show the plot
+        return fig
